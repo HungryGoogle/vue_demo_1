@@ -92,6 +92,7 @@ public class ModifyUserController {
     @RequestMapping("/modifyUser")
     @ResponseBody
     public Map modifyUser(UserBean userBean){
+        System.out.println("loginIn...");
         int flag = userService.modifyUser(userBean);
         Map<String,Object> map = new HashMap<>();
         if(flag == 1){

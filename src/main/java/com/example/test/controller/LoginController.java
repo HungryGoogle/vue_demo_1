@@ -21,6 +21,7 @@ public class LoginController {
 
     @RequestMapping(value = "/loginIn",method = RequestMethod.POST)
     public String login(String name,String password){
+        System.out.println("loginIn...");
         UserBean userBean = userService.loginIn(name,password);
         if(userBean!=null){
             return "success";

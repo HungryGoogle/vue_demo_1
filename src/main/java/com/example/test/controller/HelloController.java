@@ -8,7 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HelloController {
 
     @RequestMapping("/index")
-    public String sayHello(){
+    public String index(){
+        System.out.println("TestApplication main");
         return "index";
     }
+
+    @RequestMapping("/hello")
+    public String sayHello() {
+        System.out.println("hello sayHello");
+        return "index";
+    }
+
 }
