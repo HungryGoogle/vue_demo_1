@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title>WeekDishes</title>
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -28,8 +28,8 @@
             <tr th:each="dish : ${weekDishes}">
                 <td th:text="${dish.whichWeekDay}"></td>
                 <td th:text="${dish.mealtime}"></td>
-                <td th:text="${dish.dishName}"></td>
                 <td th:text="${dish.dishType}"></td>
+                <td th:text="${dish.dishName}"></td>
                 <td th:text="${dish.dishPrice}"></td>
 
             </tr>
