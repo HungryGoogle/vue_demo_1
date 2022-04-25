@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div id = "selectResult">
+        <table class="table table-dark table-hover">
+            <thead>
+            <tr>
+                <th>星期几</th>
+                <th>时间段</th>
+                <th>类别</th>
+                <th>菜名</th>
+                <th>价格</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="dish : ${weekDishes}">
+                <td th:text="${dish.whichWeekDay}"></td>
+                <td th:text="${dish.mealtime}"></td>
+                <td th:text="${dish.dishName}"></td>
+                <td th:text="${dish.dishType}"></td>
+                <td th:text="${dish.dishPrice}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
