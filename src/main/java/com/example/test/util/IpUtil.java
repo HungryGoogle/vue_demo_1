@@ -6,14 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
-
-/**
- * @Author : JCccc
- * @CreateTime : 2018-11-23
- * @Description :
- * @Point: Keep a good mood
- **/
 public class IpUtil {
     public static String getIpAddr(HttpServletRequest request) {
         String ipAddress = null;
