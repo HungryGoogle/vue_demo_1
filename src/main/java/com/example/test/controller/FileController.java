@@ -1,9 +1,12 @@
 package com.example.test.controller;
 
+import com.example.test.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +28,8 @@ public class FileController {
     private static final Logger log = LoggerFactory.getLogger(FileController.class);
 
     @RequestMapping("/toUpload")
-    public String toUpload(){
+    public String toUpload(Model modelMap){
+        modelMap.addAttribute("uploadResult","请先下载模板，填充信息后上传");
         return "upload";
     }
 
@@ -43,21 +47,23 @@ public class FileController {
      */
     @RequestMapping("/uploadByJarDeploy")
     // 定义：接收文件对象 MultipartFile file变量名要与form表单中input type="file" 标签name属性名一致
-    public String uploadByJarDeploy(MultipartFile file) throws IOException {
-
+    public String uploadByJarDeploy(MultipartFile file, Model modelMap) throws IOException {
         // 文件名
         String originalFilename = file.getOriginalFilename();
-        log.debug("文件名: {}", file.getOriginalFilename());
+        log.info("文件名: {}", file.getOriginalFilename());
         log.debug("文件大小: {}", file.getSize());
         log.debug("文件类型: {}", file.getContentType());
 
-        // 改文件名
-        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String newFileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS-").format(new Date()) + UUID.randomUUID() + ext;
+        String newFileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS-").format(new Date()) + originalFilename;
 
-        // 上传文件到哪
-        file.transferTo(new File(upLoadDirPath, newFileName));
-        return "redirect:/";
+        try {
+            file.transferTo(new File(upLoadDirPath, newFileName));
+        }catch (Exception e){
+            log.error("uploadfile error {}", e.getMessage());
+            return "upload";
+        }
+        modelMap.addAttribute("uploadResult","已上传文件成功");
+        return "upload";
     }
 
 
@@ -80,7 +86,6 @@ public class FileController {
         response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
         // 3.获取响应输出流
         ServletOutputStream os = response.getOutputStream();
-
         FileCopyUtils.copy(is,os);
     }
 
