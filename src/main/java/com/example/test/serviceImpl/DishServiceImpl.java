@@ -1,7 +1,6 @@
 package com.example.test.serviceImpl;
 
 import com.example.test.bean.DishBean;
-import com.example.test.bean.UserBean;
 import com.example.test.mapper.DishMapper;
 import com.example.test.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;

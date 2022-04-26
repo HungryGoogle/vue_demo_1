@@ -26,8 +26,6 @@ public class DishController {
         List<DishBean> dishList = dishService.queryWeekDishes();
         modelMap.addAttribute("weekDishes",dishList);
         LogUtil.info("list size = " + dishList.size());
-        // 返回周菜单
-//        return "users";
         return "weekDishes";
     }
 

@@ -1,7 +1,5 @@
 package com.example.test.util;
 
-import eu.bitwalker.useragentutils.UserAgent;
-
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;

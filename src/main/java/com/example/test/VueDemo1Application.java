@@ -1,14 +1,15 @@
-package com.example.vue_demo_1;
+package com.example.test;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @SpringBootApplication
-@ComponentScan("com.example.*")
+@MapperScan("com.example.test.mapper")
+@ComponentScan("com.example.test.*")
 public class VueDemo1Application {
 
     public static void main(String[] args) {
