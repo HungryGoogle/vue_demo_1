@@ -11,10 +11,8 @@ import org.springframework.stereotype.Controller;
 @MapperScan("com.example.test.mapper")
 @ComponentScan("com.example.test.*")
 public class VueDemo1Application {
-
     public static void main(String[] args) {
         SpringApplication.run(VueDemo1Application.class, args);
     }
-
 }
 

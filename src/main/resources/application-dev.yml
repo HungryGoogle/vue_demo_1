@@ -1,0 +1,10 @@
+#为环境定义名称
+server:
+  port: 8080
+spring:
+  config:
+    activate:
+      on-profile: dev
+file:
+  upload:
+    dir: D:/temp/  # 指定本地测试上传目录 (Windows系统)
