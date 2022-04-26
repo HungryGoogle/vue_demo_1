@@ -42,7 +42,6 @@ public class FileController {
      * 注意：这种方式适用于任何一种部署方式 推荐使用这种方式
      *
      * @param file
-     * @return
      * @throws IOException
      */
     @RequestMapping("/uploadByJarDeploy")
@@ -72,7 +71,6 @@ public class FileController {
 
     /**
      * 文件下载
-     * @param fileName
      */
     @RequestMapping("/download")
     public void downloadFile(String fileName, HttpServletResponse response) throws Exception {
