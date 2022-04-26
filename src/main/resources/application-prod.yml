@@ -1,6 +1,3 @@
-file:
-  upload:
-    dir: /home/user/uploads # 指定服务器测试上传目录（Linux系统）
 
 ##采用---的方式实现环境分割
 server:
@@ -9,3 +6,8 @@ spring:
   config:
     activate:
       on-profile: prod
+file:
+  upload:
+    dir: /home/user/uploads # 指定服务器测试上传目录（Linux系统）
+  download：
+    dir: /home/user/download

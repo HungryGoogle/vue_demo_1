@@ -8,7 +8,8 @@
     <title>SpringBoot上传文件</title>
 </head>
 <body>
-<h1>测试SpringBoot文件上传</h1>
+<h1>杭高院每周菜单管理</h1>
+<a th:href="@{/file/download(fileName=杭高院每周菜单模板.xls)}">杭高院每周菜单上传模板</a> <br/>
 <form th:action="@{/file/uploadByJarDeploy}" method="post" enctype="multipart/form-data">
     <input type="file" name="file"/>
     <input type="submit" value="上传文件">

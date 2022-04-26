@@ -8,3 +8,5 @@ spring:
 file:
   upload:
     dir: D:/temp/  # 指定本地测试上传目录 (Windows系统)
+  download:
+    dir: D:/temp/download
