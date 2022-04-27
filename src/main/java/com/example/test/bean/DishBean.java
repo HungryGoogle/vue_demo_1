@@ -1,11 +1,22 @@
 package com.example.test.bean;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
+import lombok.Data;
+
+@Data
 public class DishBean {
+    @ExcelIgnore
     private int id;
+    @ExcelProperty(value = "周几",index = 0)
     private String whichWeekDay;    //周几
-    private String mealtime;        //餐名，早餐、中餐、晚餐、夜宵
-    private String dishName;        //菜名
-    private String dishType;        //热菜、凉菜、汤、炖菜
+    @ExcelProperty(value = "餐名",index = 1)
+    private String mealtime;        //菜名
+    @ExcelProperty(value = "菜类",index = 2)
+    private String dishType;        //餐名，早餐、中餐、晚餐、夜宵
+    @ExcelProperty(value = "菜名",index = 3)
+    private String dishName;        //热菜、凉菜、汤、炖菜
+    @ExcelProperty(value = "菜价",index = 4)
     private float dishPrice;       // 菜的价格
 
     public int getId() {

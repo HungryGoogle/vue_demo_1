@@ -3,7 +3,9 @@ package com.example.test.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.example.test.bean.DemoData;
+import com.example.test.bean.DishBean;
 import com.example.test.bean.PhoneAttachExcel;
+import com.example.test.serviceImpl.DishMenuExcelListener;
 import com.example.test.serviceImpl.ExcelListener;
 import com.example.test.serviceImpl.ReadExcelUtil;
 import com.example.test.util.IpUtil;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,16 +40,16 @@ public class HelloController {
 //
 
 //        //1.设置写入文件夹地址和Excel文件名称
-//        String filename = "d:\\write.xlsx";
+        String filename = "d:\\write2.xlsx";
 //
-//        //2.调用easyExcel里面的方法实现写操作
-//        //write两个参数 参数1：文件路径名称  参数2：实体类class    doWrite方法需要一个list集合
-//        EasyExcel.write(filename, DemoData.class).sheet("学生列表").doWrite(getData());
-
-
-        String filename = "d:\\write.xlsx";
-        EasyExcel.read(filename,DemoData.class,new ExcelListener()).sheet().doRead();
-
+        //2.调用easyExcel里面的方法实现写操作
+        //write两个参数 参数1：文件路径名称  参数2：实体类class    doWrite方法需要一个list集合
+        try {
+            EasyExcel.write(filename, DishBean.class).sheet("每周菜单").doWrite(getData2());
+            EasyExcel.read(filename, DishBean.class, new DishMenuExcelListener()).sheet().doRead();
+        }catch (Exception e){
+            LogUtil.info(e.getLocalizedMessage());
+        }
         return "index";
     }
 
@@ -57,6 +60,21 @@ public class HelloController {
             DemoData data = new DemoData();
             data.setSno(i);
             data.setSname("lucky" + i);
+            list.add(data);
+        }
+        return list;
+    }
+
+    //创建一个方法，让其返回list集合
+    private static List<DishBean> getData2() {
+        List<DishBean> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            DishBean data = new DishBean();
+            data.setDishName("菜名" + i);
+            data.setDishPrice((float) (i * 7 % 11 * 1.0 /2));
+            data.setDishType("热菜");
+            data.setMealtime("早餐");
+            data.setWhichWeekDay("周一");
             list.add(data);
         }
         return list;
