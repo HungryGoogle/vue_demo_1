@@ -4,6 +4,7 @@ package com.example.test.controller;
 import com.alibaba.excel.EasyExcel;
 import com.example.test.bean.DemoData;
 import com.example.test.bean.PhoneAttachExcel;
+import com.example.test.serviceImpl.ExcelListener;
 import com.example.test.serviceImpl.ReadExcelUtil;
 import com.example.test.util.IpUtil;
 import com.example.test.util.LogUtil;
@@ -35,12 +36,16 @@ public class HelloController {
 //        List<PhoneAttachExcel> list = readExcelUtil.list;
 //
 
-        //1.设置写入文件夹地址和Excel文件名称
-        String filename = "d:\\write.xlsx";
+//        //1.设置写入文件夹地址和Excel文件名称
+//        String filename = "d:\\write.xlsx";
+//
+//        //2.调用easyExcel里面的方法实现写操作
+//        //write两个参数 参数1：文件路径名称  参数2：实体类class    doWrite方法需要一个list集合
+//        EasyExcel.write(filename, DemoData.class).sheet("学生列表").doWrite(getData());
 
-        //2.调用easyExcel里面的方法实现写操作
-        //write两个参数 参数1：文件路径名称  参数2：实体类class    doWrite方法需要一个list集合
-        EasyExcel.write(filename, DemoData.class).sheet("学生列表").doWrite(getData());
+
+        String filename = "d:\\write.xlsx";
+        EasyExcel.read(filename,DemoData.class,new ExcelListener()).sheet().doRead();
 
         return "index";
     }
