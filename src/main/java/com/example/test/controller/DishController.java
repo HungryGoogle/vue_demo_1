@@ -22,7 +22,7 @@ public class DishController {
      * @return
      */
     @RequestMapping("/weekDishes")
-    public String showUsers(ModelMap modelMap){
+    public String weekDishes(ModelMap modelMap){
         List<DishBean> dishList = dishService.queryWeekDishes();
         modelMap.addAttribute("weekDishes",dishList);
         LogUtil.info("list size = " + dishList.size());

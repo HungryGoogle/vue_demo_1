@@ -1,28 +1,37 @@
-package com.example.test.manager;
+package com.example.test.controller;
 
 import com.example.test.bean.DishBean;
 import com.example.test.bean.KeyValueBean;
+import com.example.test.service.DishService;
 import com.example.test.util.LogUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class DishMenuManager {
+    DishService dishService;
     boolean tokenIsValidate = false;
     List<DishBean> list = new ArrayList<>();
 
-    public void init(){
+    public void init(DishService _dishService){
         tokenIsValidate = false;
         list.clear();
+        dishService = _dishService;
     }
 
     public void addDishItem(DishBean dishBean){
         LogUtil.info(dishBean.toString());
-        list.add(dishBean);
+//        list.add(dishBean);
+
+        dishService.insertDish(dishBean);
     }
 
-    List<DishBean> getDishMenu(){
-        return list;
+    public List<DishBean> queryWeekDishes(){
+//        return list;
+        return dishService.queryWeekDishes();
     }
 
 
@@ -36,6 +45,7 @@ public class DishMenuManager {
             if("tokenValue".equalsIgnoreCase(keyValueBean.getValue())){
                 tokenIsValidate = true;
                 LogUtil.info("token is validate.");
+//                dishService.deleteAllDishes();
                 return 0;
             }else {
                 tokenIsValidate = false;

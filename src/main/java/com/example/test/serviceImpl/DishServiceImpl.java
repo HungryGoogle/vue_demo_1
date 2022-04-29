@@ -20,4 +20,15 @@ public class DishServiceImpl implements DishService {
     public List<DishBean> queryWeekDishes() {
         return dishMapper.getWeekDishes();
     }
+
+    @Override
+    public int insertDish(DishBean dishBean) {
+        return dishMapper.insertDish(dishBean);
+    }
+
+    @Override
+    public int deleteAllDishes() {
+        return dishMapper.deleteAllDishes();
+    }
+
 }

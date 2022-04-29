@@ -3,12 +3,12 @@ package com.example.test.controller;
 import com.alibaba.excel.EasyExcel;
 import com.example.test.bean.DishBean;
 import com.example.test.bean.KeyValueBean;
-import com.example.test.manager.DishMenuManager;
-import com.example.test.mapper.DishMapper;
+import com.example.test.service.DishService;
 import com.example.test.serviceImpl.DishMenuExcelListener;
 import com.example.test.serviceImpl.KeyValueExcelListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +33,9 @@ public class FileController {
 
     @Value("${file.upload.dir}")
     private String upLoadDirPath;
+
+    @Autowired
+    DishService dishService;
 
     @RequestMapping("/toUpload")
     public String toUpload(Model modelMap){
@@ -67,16 +70,17 @@ public class FileController {
 
         // 下载之后，进行解析1，token是否正确
         try{
-            DishMenuManager.getIns().init();
+            DishMenuManager.getIns().init(dishService);
             EasyExcel.read(upLoadDirPath + newFileName, KeyValueBean.class, new KeyValueExcelListener()).sheet("token").doRead();
             EasyExcel.read(upLoadDirPath + newFileName, DishBean.class, new DishMenuExcelListener()).sheet("周菜单").doRead();
         }catch (Exception e){
             e.printStackTrace();
+            modelMap.addAttribute("uploadResult","文件上传失败，请重试...");
             return "upload";
         }
 
         modelMap.addAttribute("uploadResult","已上传文件成功");
-        return "upload";
+        return "redirect:/weekDishes";
     }
 
 

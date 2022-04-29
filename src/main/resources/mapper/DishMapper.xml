@@ -4,7 +4,20 @@
 
     <!--查询所有用户信息，返回一个List<Bean>-->
     <select id="getWeekDishes" resultType="com.example.test.bean.DishBean">
-        SELECT * FROM weekdish ;
+        SELECT * FROM weekdish;
     </select>
+
+    <!--插入新用户信息，ID是自动生成的,返回数据库操作影响行数，为0则是失败-->
+    <insert id="insertDish" parameterType="com.example.test.bean.DishBean">
+        INSERT InTO
+            weekdish(whichWeekDay,mealtime,dishType,dishName,dishPrice)
+        values
+            (#{whichWeekDay},#{mealtime},#{dishType},#{dishName},#{dishPrice});
+    </insert>
+
+    <!--根据ID删除用户，返回数据库操作影响行数，为0则是失败-->
+    <delete id="deleteAllDishes" parameterType="String">
+        DELETE FROM weekdish;
+    </delete>
 
 </mapper>

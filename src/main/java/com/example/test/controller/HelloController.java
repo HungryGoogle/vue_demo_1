@@ -34,28 +34,6 @@ public class HelloController {
     @RequestMapping("/hello")
     public String sayHello() {
         LogUtil.info("[lee-->]LoggerFactory sayHello");
-//        //1.设置写入文件夹地址和Excel文件名称
-//        String filename = "d:\\write2.xlsx";
-//        try {
-//            //新建ExcelWriter
-//            ExcelWriter excelWriter = EasyExcel.write(filename).build();
-//            //获取sheet0对象
-//            WriteSheet mainSheet = EasyExcel.writerSheet(0, "1").head(DishBean.class).build();
-//            //向sheet0写入数据 传入空list这样只导出表头
-//            excelWriter.write(getData2(),mainSheet);
-//            //获取sheet1对象
-//            WriteSheet detailSheet = EasyExcel.writerSheet(1, "2").head(DishBean.class).build();
-//            //向sheet1写入数据 传入空list这样只导出表头
-//            excelWriter.write(getData3(),detailSheet);
-//            //关闭流
-//            excelWriter.finish();
-//
-//            EasyExcel.read(filename, DishBean.class, new DishMenuExcelListener()).sheet(0).doRead();
-//            EasyExcel.read(filename, DishBean.class, new DishMenuExcelListener()).sheet(1).doRead();
-//
-//        }catch (Exception e){
-//            LogUtil.info("exception, e.getLocalizedMessage()");
-//        }
         return "index";
     }
 

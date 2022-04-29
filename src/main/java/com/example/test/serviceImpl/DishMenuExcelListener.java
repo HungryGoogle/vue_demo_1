@@ -3,7 +3,7 @@ package com.example.test.serviceImpl;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.example.test.bean.DishBean;
-import com.example.test.manager.DishMenuManager;
+import com.example.test.controller.DishMenuManager;
 import com.example.test.util.LogUtil;
 
 import java.util.Map;
