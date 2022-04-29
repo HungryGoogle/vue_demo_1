@@ -10,3 +10,5 @@ file:
     dir: D:/temp/  # 指定本地测试上传目录 (Windows系统)
   download:
     dir: D:/temp/download
+config:
+  dishToken：RWxJrjJkipZFu6LZZC3vKCloytNAFifuK17ouvSZnZKpRyGcvRWF7EQt9achTWl8xGoE4YHvc2IH8Efar4ZJREzqKi4amVumET3OUChFqulKvw8CZN36V75khda3kd97

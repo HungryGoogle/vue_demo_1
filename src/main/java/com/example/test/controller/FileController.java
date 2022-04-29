@@ -1,12 +1,17 @@
 package com.example.test.controller;
 
-import com.example.test.util.LogUtil;
+import com.alibaba.excel.EasyExcel;
+import com.example.test.bean.DishBean;
+import com.example.test.bean.KeyValueBean;
+import com.example.test.manager.DishMenuManager;
+import com.example.test.mapper.DishMapper;
+import com.example.test.serviceImpl.DishMenuExcelListener;
+import com.example.test.serviceImpl.KeyValueExcelListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +24,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/file")
@@ -52,7 +56,7 @@ public class FileController {
         log.debug("文件大小: {}", file.getSize());
         log.debug("文件类型: {}", file.getContentType());
 
-        String newFileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS-").format(new Date()) + originalFilename;
+        String newFileName = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS-").format(new Date()) + originalFilename;
 
         try {
             file.transferTo(new File(upLoadDirPath, newFileName));
@@ -62,6 +66,14 @@ public class FileController {
         }
 
         // 下载之后，进行解析1，token是否正确
+        try{
+            DishMenuManager.getIns().init();
+            EasyExcel.read(upLoadDirPath + newFileName, KeyValueBean.class, new KeyValueExcelListener()).sheet("token").doRead();
+            EasyExcel.read(upLoadDirPath + newFileName, DishBean.class, new DishMenuExcelListener()).sheet("周菜单").doRead();
+        }catch (Exception e){
+            e.printStackTrace();
+            return "upload";
+        }
 
         modelMap.addAttribute("uploadResult","已上传文件成功");
         return "upload";

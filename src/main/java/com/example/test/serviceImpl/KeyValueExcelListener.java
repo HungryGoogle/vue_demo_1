@@ -3,18 +3,21 @@ package com.example.test.serviceImpl;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.example.test.bean.DishBean;
+import com.example.test.bean.KeyValueBean;
 import com.example.test.manager.DishMenuManager;
 import com.example.test.util.LogUtil;
 
 import java.util.Map;
 
 //读取excel的监听器
-public class DishMenuExcelListener extends AnalysisEventListener<DishBean> {
+public class KeyValueExcelListener extends AnalysisEventListener<KeyValueBean> {
 
     //一行一行读取Excel内容
     @Override
-    public void invoke(DishBean dishBean, AnalysisContext analysisContext) {
-        DishMenuManager.getIns().addDishItem(dishBean);
+    public void invoke(KeyValueBean keyValueBean, AnalysisContext analysisContext) {
+
+        DishMenuManager.getIns().checkTokenInvalidate(keyValueBean);
+        System.out.println("-->" + keyValueBean);
     }
 
     //读取表头内容
