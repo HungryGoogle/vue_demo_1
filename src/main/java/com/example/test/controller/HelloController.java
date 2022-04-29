@@ -2,6 +2,9 @@ package com.example.test.controller;
 
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.example.test.bean.DemoData;
 import com.example.test.bean.DishBean;
 import com.example.test.bean.PhoneAttachExcel;
@@ -10,6 +13,7 @@ import com.example.test.serviceImpl.ExcelListener;
 import com.example.test.serviceImpl.ReadExcelUtil;
 import com.example.test.util.IpUtil;
 import com.example.test.util.LogUtil;
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,25 +34,27 @@ public class HelloController {
     @RequestMapping("/hello")
     public String sayHello() {
         LogUtil.info("[lee-->]LoggerFactory sayHello");
-//        ReadExcelUtil readExcelUtil = new ReadExcelUtil();
-//        File file = new File("D:/lldizhi1.xls");
-//        EasyExcel.read(file,ReadExcelUtil.class,readExcelUtil)
-//                .sheet()
-//                .headRowNumber(1)
-//                .doRead();
-//        List<PhoneAttachExcel> list = readExcelUtil.list;
-//
-
-//        //1.设置写入文件夹地址和Excel文件名称
+        //1.设置写入文件夹地址和Excel文件名称
         String filename = "d:\\write2.xlsx";
-//
-        //2.调用easyExcel里面的方法实现写操作
-        //write两个参数 参数1：文件路径名称  参数2：实体类class    doWrite方法需要一个list集合
         try {
-            EasyExcel.write(filename, DishBean.class).sheet("每周菜单").doWrite(getData2());
-            EasyExcel.read(filename, DishBean.class, new DishMenuExcelListener()).sheet().doRead();
+            //新建ExcelWriter
+            ExcelWriter excelWriter = EasyExcel.write(filename).build();
+            //获取sheet0对象
+            WriteSheet mainSheet = EasyExcel.writerSheet(0, "1").head(DishBean.class).build();
+            //向sheet0写入数据 传入空list这样只导出表头
+            excelWriter.write(getData2(),mainSheet);
+            //获取sheet1对象
+            WriteSheet detailSheet = EasyExcel.writerSheet(1, "2").head(DishBean.class).build();
+            //向sheet1写入数据 传入空list这样只导出表头
+            excelWriter.write(getData3(),detailSheet);
+            //关闭流
+            excelWriter.finish();
+
+            EasyExcel.read(filename, DishBean.class, new DishMenuExcelListener()).sheet(0).doRead();
+            EasyExcel.read(filename, DishBean.class, new DishMenuExcelListener()).sheet(1).doRead();
+
         }catch (Exception e){
-            LogUtil.info(e.getLocalizedMessage());
+            LogUtil.info("exception, e.getLocalizedMessage()");
         }
         return "index";
     }
@@ -75,6 +81,22 @@ public class HelloController {
             data.setDishType("热菜");
             data.setMealtime("早餐");
             data.setWhichWeekDay("周一");
+            list.add(data);
+        }
+        return list;
+    }
+
+
+    //创建一个方法，让其返回list集合
+    private static List<DishBean> getData3() {
+        List<DishBean> list = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            DishBean data = new DishBean();
+            data.setDishName("菜名3" + i);
+            data.setDishPrice((float) (i * 7 % 11 * 1.0 /2));
+            data.setDishType("热菜3");
+            data.setMealtime("早餐3");
+            data.setWhichWeekDay("周3");
             list.add(data);
         }
         return list;

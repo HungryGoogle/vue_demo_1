@@ -27,15 +27,14 @@ public class FileController {
 
     private static final Logger log = LoggerFactory.getLogger(FileController.class);
 
-    @RequestMapping("/toUpload")
-    public String toUpload(Model modelMap){
-        modelMap.addAttribute("uploadResult","请先下载模板，填充信息后上传");
-        return "upload";
-    }
-
-
     @Value("${file.upload.dir}")
     private String upLoadDirPath;
+
+    @RequestMapping("/toUpload")
+    public String toUpload(Model modelMap){
+        modelMap.addAttribute("uploadResult","请下载模板，完善信息上传文件");
+        return "upload";
+    }
 
     /**
      * 第二种文件上传
@@ -61,6 +60,9 @@ public class FileController {
             log.error("uploadfile error {}", e.getMessage());
             return "upload";
         }
+
+        // 下载之后，进行解析1，token是否正确
+
         modelMap.addAttribute("uploadResult","已上传文件成功");
         return "upload";
     }
@@ -86,5 +88,7 @@ public class FileController {
         ServletOutputStream os = response.getOutputStream();
         FileCopyUtils.copy(is,os);
     }
+
+
 
 }
