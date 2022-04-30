@@ -1,31 +1,26 @@
 package com.example.test.controller;
 
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
-import com.alibaba.excel.write.metadata.WriteSheet;
 import com.example.test.bean.DemoData;
 import com.example.test.bean.DishBean;
-import com.example.test.bean.PhoneAttachExcel;
-import com.example.test.serviceImpl.DishMenuExcelListener;
-import com.example.test.serviceImpl.ExcelListener;
-import com.example.test.serviceImpl.ReadExcelUtil;
 import com.example.test.util.IpUtil;
 import com.example.test.util.LogUtil;
-import org.apache.commons.compress.utils.Lists;
+import com.example.test.util.config.DishConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class HelloController {
+
+    @Autowired
+    DishConfig dishConfig;
+
     @RequestMapping("/index")
     public String index() {
         return "index";
@@ -34,6 +29,12 @@ public class HelloController {
     @RequestMapping("/hello")
     public String sayHello() {
         LogUtil.info("[lee-->]LoggerFactory sayHello");
+//        ConfigUtils configUtils = new ConfigUtils();
+//        LogUtil.info(String.valueOf(configUtils.getMaxDishItem()));
+//        LogUtil.info(configUtils.getUpLoadDirPath());
+        LogUtil.info(String.valueOf(dishConfig.getMaxDishItem()));
+        LogUtil.info(dishConfig.getFileDownloadDir());
+
         return "indexVue";
     }
 

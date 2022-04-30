@@ -7,15 +7,13 @@ import com.example.test.service.DishService;
 import com.example.test.serviceImpl.DishMenuExcelListener;
 import com.example.test.serviceImpl.KeyValueExcelListener;
 import com.example.test.util.LogUtil;
-import com.example.test.util.PathUtil;
+import com.example.test.util.config.DishConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,16 +32,16 @@ public class FileController {
 
     private static final Logger log = LoggerFactory.getLogger(FileController.class);
 
-    @Value("${file.upload.dir}")
-    private String upLoadDirPath;
+    @Autowired
+    DishConfig dishConfig;
 
     @Autowired
     DishService dishService;
 
     @RequestMapping("/toUpload")
-    public String toUpload(Model modelMap){
+    public String toUpload(Model modelMap) {
         LogUtil.info("toUpload ...");
-        modelMap.addAttribute("uploadResult","请下载模板，根据模板完善信息后上传...");
+        modelMap.addAttribute("uploadResult", "请先下载模板，根据模板完善信息后上传...");
         return "upload";
     }
 
@@ -55,63 +53,49 @@ public class FileController {
      * @throws IOException
      */
     @RequestMapping("/uploadByJarDeploy")
-    // 定义：接收文件对象 MultipartFile file变量名要与form表单中input type="file" 标签name属性名一致
     public String uploadByJarDeploy(MultipartFile file, Model modelMap) throws IOException {
-        // 文件名
         String originalFilename = file.getOriginalFilename();
-        log.info("文件名: {}", file.getOriginalFilename());
-        log.debug("文件大小: {}", file.getSize());
-        log.debug("文件类型: {}", file.getContentType());
-
+        LogUtil.info("文件名: " + dishConfig.getFileUploadDir() + file.getOriginalFilename());
         String newFileName = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS-").format(new Date()) + originalFilename;
 
         try {
-            file.transferTo(new File(upLoadDirPath, newFileName));
-        }catch (Exception e){
+            file.transferTo(new File(dishConfig.getFileUploadDir(), newFileName));
+        } catch (Exception e) {
             log.error("uploadfile error {}", e.getMessage());
+            modelMap.addAttribute("uploadResult", "文件上传失败，请重试...");
             return "upload";
         }
 
         // 下载之后，进行解析1，token是否正确
-        try{
-            DishMenuManager.getIns().init(dishService);
-            EasyExcel.read(upLoadDirPath + newFileName, KeyValueBean.class, new KeyValueExcelListener()).sheet("token").doRead();
-            EasyExcel.read(upLoadDirPath + newFileName, DishBean.class, new DishMenuExcelListener()).sheet("周菜单").doRead();
-        }catch (Exception e){
+        try {
+            DishMenuManager.getIns().init(dishService, dishConfig);
+            EasyExcel.read(dishConfig.getFileUploadDir() + newFileName, KeyValueBean.class, new KeyValueExcelListener()).sheet("token").doRead();
+            EasyExcel.read(dishConfig.getFileUploadDir() + newFileName, DishBean.class, new DishMenuExcelListener()).sheet("周菜单").doRead();
+        } catch (Exception e) {
             e.printStackTrace();
-            modelMap.addAttribute("uploadResult","文件上传失败，请重试...");
+            modelMap.addAttribute("uploadResult", "文件解析失败，请重试...");
             return "upload";
         }
 
-        modelMap.addAttribute("uploadResult","已上传文件成功");
+        modelMap.addAttribute("uploadResult", "已上传文件成功");
         return "redirect:/weekDishes";
     }
 
-
-    @Value("${file.download.dir}")
-    private String downloadRealPath;
 
     /**
      * 文件下载
      */
     @RequestMapping("/download")
     public void downloadFile(String fileName, HttpServletResponse response) throws Exception {
-        log.debug("当前下载的文件名是：{}", fileName);
-        log.debug("当前下载的文件的目录是：{}", downloadRealPath);
-//        // 1.去指定目录读取文件
-        File file = new File(downloadRealPath, fileName);
-        // 1.2 去指定目录读取文件 Failed
-//        File file = ResourceUtils.getFile(PathUtil.getResourceBasePath() + "\\src\\main\\resources\\templates\\杭高院每周菜单模板.xlsx");
-
-        // 2.将文件读取为文件输入流
+        LogUtil.info("当前下载的文件的目录是：" + dishConfig.getFileDownloadDir());
+        File file = new File(dishConfig.getFileDownloadDir(), fileName);
         FileInputStream is = new FileInputStream(file);
         // 2.1 获取响应流之前  一定要设置以附件形式下载
         response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
         // 3.获取响应输出流
         ServletOutputStream os = response.getOutputStream();
-        FileCopyUtils.copy(is,os);
+        FileCopyUtils.copy(is, os);
     }
-
 
 
 }

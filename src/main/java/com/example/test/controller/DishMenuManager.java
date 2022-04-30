@@ -4,6 +4,7 @@ import com.example.test.bean.DishBean;
 import com.example.test.bean.KeyValueBean;
 import com.example.test.service.DishService;
 import com.example.test.util.LogUtil;
+import com.example.test.util.config.DishConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +14,15 @@ import java.util.List;
 @Component
 public class DishMenuManager {
     DishService dishService;
+    DishConfig dishConfig;
     boolean tokenIsValidate = false;
     int dishCount = 0;
 
-    public void init(DishService _dishService){
+    public void init(DishService _dishService, DishConfig _dishConfig){
         tokenIsValidate = false;
         dishCount = 0;
         dishService = _dishService;
+        dishConfig = _dishConfig;
     }
 
     public void addDishItem(DishBean dishBean){
@@ -45,12 +48,13 @@ public class DishMenuManager {
         }
 
         if("token".equalsIgnoreCase(keyValueBean.getKey())){
-            if("RWxJrjJkipZFu6LZZC3vKCloytNAFifuK17ouvSZnZKpRyGcvRWF7EQt9achTWl8xGoE4YHvc2IH8Efar4ZJREzqKi4amVumET3OUChFqulKvw8CZN36V75khda3kd97".equalsIgnoreCase(keyValueBean.getValue())){
+            if(dishConfig.getFileUploadToken().equalsIgnoreCase(keyValueBean.getValue())){
                 tokenIsValidate = true;
                 LogUtil.info("token is validate.");
 
                 // 清空之前的菜单
                 dishService.deleteAllDishes();
+
                 return 0;
             }else {
                 LogUtil.info("token is invalidate.");
