@@ -34,7 +34,7 @@ public class HelloController {
     @RequestMapping("/hello")
     public String sayHello() {
         LogUtil.info("[lee-->]LoggerFactory sayHello");
-        return "index";
+        return "indexVue";
     }
 
     //创建一个方法，让其返回list集合
