@@ -5,22 +5,39 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SpringBoot上传文件</title>
+    <title>上传杭高院周菜单Excel</title>
+    <link rel="stylesheet" type="text/css" href="../css/login.style.css">
 </head>
 <body>
-<style>
-    #fontset5{font-size:5vw;}
-    #fontset7{font-size:6vw;}
-</style>
+<div id="content">
+    <div class="login-header" align="center">
+        <h2>杭高院每周菜单管理</h2>
+    </div>
+    <div class="last">
+        <p th:text="${uploadResult}"/>
+    </div>
 
-<h1>杭高院每周菜单管理</h1>
-
-<p th:text="${uploadResult}">default message</p>
-
-<a th:href="@{/file/download(fileName=杭高院每周菜单模板.xlsx)}">杭高院每周菜单上传模板</a> <br/>
-<form th:action="@{/file/uploadByJarDeploy}" method="post" enctype="multipart/form-data">
-    <input type="file" name="file"/>
-    <input type="submit" value="上传文件">
-</form>
+    <form th:action="@{/file/uploadByJarDeploy}" method="post" enctype="multipart/form-data">
+        <div class="remember-box">
+            <div class="item">
+                <input type="file" name="file" th:data="上传菜单Excel"/>
+            </div>
+        </div>
+        <div class="login-input-box">
+            <span class="icon icon-user"></span>
+            <input type="text" placeholder="管理员id">
+        </div>
+        <div class="login-input-box">
+            <span class="icon icon-password"></span>
+            <input type="password" placeholder="上传文件token">
+        </div>
+        <div class="login-button-box">
+            <button type="submit"> 上传文件 </button>
+        </div>
+    </form>
+    <div class="logon-box">
+        <a th:href="@{/file/download(fileName=杭高院每周菜单模板.xlsx)}">杭高院每周菜单上传模板</a>
+    </div>
+</div>
 </body>
 </html>
