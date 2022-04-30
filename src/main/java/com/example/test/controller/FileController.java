@@ -6,6 +6,8 @@ import com.example.test.bean.KeyValueBean;
 import com.example.test.service.DishService;
 import com.example.test.serviceImpl.DishMenuExcelListener;
 import com.example.test.serviceImpl.KeyValueExcelListener;
+import com.example.test.util.LogUtil;
+import com.example.test.util.PathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +42,8 @@ public class FileController {
 
     @RequestMapping("/toUpload")
     public String toUpload(Model modelMap){
-        modelMap.addAttribute("uploadResult","请下载模板，完善信息上传文件");
+        LogUtil.info("toUpload ...");
+        modelMap.addAttribute("uploadResult","请下载模板，根据模板完善信息后上传...");
         return "upload";
     }
 
@@ -94,8 +98,11 @@ public class FileController {
     public void downloadFile(String fileName, HttpServletResponse response) throws Exception {
         log.debug("当前下载的文件名是：{}", fileName);
         log.debug("当前下载的文件的目录是：{}", downloadRealPath);
-        // 1.去指定目录读取文件
+//        // 1.去指定目录读取文件
         File file = new File(downloadRealPath, fileName);
+        // 1.2 去指定目录读取文件 Failed
+//        File file = ResourceUtils.getFile(PathUtil.getResourceBasePath() + "\\src\\main\\resources\\templates\\杭高院每周菜单模板.xlsx");
+
         // 2.将文件读取为文件输入流
         FileInputStream is = new FileInputStream(file);
         // 2.1 获取响应流之前  一定要设置以附件形式下载

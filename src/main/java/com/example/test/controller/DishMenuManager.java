@@ -14,24 +14,27 @@ import java.util.List;
 public class DishMenuManager {
     DishService dishService;
     boolean tokenIsValidate = false;
-    List<DishBean> list = new ArrayList<>();
+    int dishCount = 0;
 
     public void init(DishService _dishService){
         tokenIsValidate = false;
-        list.clear();
+        dishCount = 0;
         dishService = _dishService;
     }
 
     public void addDishItem(DishBean dishBean){
         LogUtil.info(dishBean.toString());
-//        list.add(dishBean);
-
-        dishService.insertDish(dishBean);
+        if(dishService != null && tokenIsValidate && dishCount < 300) {
+            dishService.insertDish(dishBean);
+            dishCount++;
+        }
     }
 
     public List<DishBean> queryWeekDishes(){
-//        return list;
-        return dishService.queryWeekDishes();
+        if(dishService != null) {
+            return dishService.queryWeekDishes();
+        }
+        return new ArrayList<>();
     }
 
 
@@ -42,12 +45,15 @@ public class DishMenuManager {
         }
 
         if("token".equalsIgnoreCase(keyValueBean.getKey())){
-            if("tokenValue".equalsIgnoreCase(keyValueBean.getValue())){
+            if("RWxJrjJkipZFu6LZZC3vKCloytNAFifuK17ouvSZnZKpRyGcvRWF7EQt9achTWl8xGoE4YHvc2IH8Efar4ZJREzqKi4amVumET3OUChFqulKvw8CZN36V75khda3kd97".equalsIgnoreCase(keyValueBean.getValue())){
                 tokenIsValidate = true;
                 LogUtil.info("token is validate.");
-//                dishService.deleteAllDishes();
+
+                // 清空之前的菜单
+                dishService.deleteAllDishes();
                 return 0;
             }else {
+                LogUtil.info("token is invalidate.");
                 tokenIsValidate = false;
             }
         }

@@ -22,7 +22,7 @@
         <table class="table table-white table-hover">
             <thead>
             <tr>
-                <th>   周几</th>
+                <th align="right" >&nbsp;周几</th>
                 <th>餐名</th>
                 <th>菜名</th>
                 <th>价格</th>
@@ -31,7 +31,7 @@
             </thead>
             <tbody>
             <tr th:each="dish : ${weekDishes}">
-                <td th:text="${dish.whichWeekDay}"></td>
+                <td class="col-sm-2" align="center" th:text="${dish.whichWeekDay}"></td>
                 <td th:text="${dish.mealtime}"></td>
                 <td th:text="${dish.dishName}"></td>
                 <td th:text="${dish.dishPrice}"></td>
