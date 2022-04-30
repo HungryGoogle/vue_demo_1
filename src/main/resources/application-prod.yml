@@ -1,13 +1,27 @@
-
-##采用---的方式实现环境分割
-server:
-  port: 8080
+#为环境定义名称
 spring:
-  config:
-    activate:
-      on-profile: prod
-file:
-  upload:
-    dir: /home/user/uploads # 指定服务器测试上传目录（Linux系统）
-  download：
-    dir: /home/user/download
+  server:
+    port: 8080
+
+
+  datasource:
+    name: test
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: password
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.test.bean
+
+dishmenu:
+  fileUploadDir: D:/temp/
+  fileDownloadDir: D:/temp/download/
+  fileUploadToken: RWxJrjJkipZFu6LZZC3vKCloytNAFifuK17ouvSZnZKpRyGcvRWF7EQt9achTWl8xGoE4YHvc2IH8Efar4ZJREzqKi4amVumET3OUChFqulKvw8CZN36V75khda3kd97
+  maxDishItem: 300
+
+servlet:
+  multipart:   ## 修改文件上传的大小限制
+    max-request-size: 1024MB   # 运行请求传递文件大小最大为1024MB
+    max-file-size: 1024MB       # 运行服务器可以处理的最大文件大小1024MB

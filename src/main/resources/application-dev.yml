@@ -1,7 +1,19 @@
 #为环境定义名称
-server:
-  port: 8080
+spring:
+  server:
+    port: 8080
 
+
+  datasource:
+    name: test
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: password
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.test.bean
 
 dishmenu:
   fileUploadDir: D:/temp/
@@ -9,7 +21,7 @@ dishmenu:
   fileUploadToken: RWxJrjJkipZFu6LZZC3vKCloytNAFifuK17ouvSZnZKpRyGcvRWF7EQt9achTWl8xGoE4YHvc2IH8Efar4ZJREzqKi4amVumET3OUChFqulKvw8CZN36V75khda3kd97
   maxDishItem: 300
 
-mail:
-  hostname:mailer@mail.com
-  port:9000
-  from:mailer@mail.com
+servlet:
+  multipart:   ## 修改文件上传的大小限制
+    max-request-size: 1024MB   # 运行请求传递文件大小最大为1024MB
+    max-file-size: 1024MB       # 运行服务器可以处理的最大文件大小1024MB
