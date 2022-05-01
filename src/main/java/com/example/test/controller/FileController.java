@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
@@ -53,7 +55,7 @@ public class FileController {
      * @throws IOException
      */
     @RequestMapping("/uploadByJarDeploy")
-    public String uploadByJarDeploy(MultipartFile file, Model modelMap) throws IOException {
+    public String uploadByJarDeploy( KeyValueBean keyValueBean, MultipartFile file,Model modelMap) throws IOException {
         String originalFilename = file.getOriginalFilename();
         LogUtil.info("文件名: " + dishConfig.getFileUploadDir() + file.getOriginalFilename());
         String newFileName = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS-").format(new Date()) + originalFilename;

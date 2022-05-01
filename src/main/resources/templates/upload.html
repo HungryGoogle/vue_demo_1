@@ -15,8 +15,7 @@
         杭高院每周菜单管理
     </div>
 
-
-    <form th:action="@{/file/uploadByJarDeploy}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/file/uploadByJarDeploy}" method="post" enctype="multipart/form-data" >
         <div class="login-tip" >
             <div th:text="${uploadResult}"/>
         </div>
@@ -25,13 +24,13 @@
                 <input type="file" name="file" th:data="上传菜单Excel"/>
             </div>
         </div>
-        <div class="login-input-box">
+        <div class="login-input-box" >
             <span class="icon icon-user"></span>
-            <input type="text" placeholder="管理员id">
+            <input type="text" placeholder="管理员id" id="key"  name="key">
         </div>
         <div class="login-input-box">
             <span class="icon icon-password"></span>
-            <input type="password" placeholder="上传文件token">
+            <input type="text" placeholder="上传文件token" id="value" name="value">
         </div>
         <div class="login-button-box">
             <button type="submit"> 上传文件 </button>
