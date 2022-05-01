@@ -6,6 +6,7 @@ import com.example.test.bean.KeyValueBean;
 import com.example.test.service.DishService;
 import com.example.test.serviceImpl.DishMenuExcelListener;
 import com.example.test.serviceImpl.KeyValueExcelListener;
+import com.example.test.util.FileUtils;
 import com.example.test.util.LogUtil;
 import com.example.test.util.config.DishConfig;
 import org.slf4j.Logger;
@@ -55,7 +56,19 @@ public class FileController {
      * @throws IOException
      */
     @RequestMapping("/uploadByJarDeploy")
-    public String uploadByJarDeploy( KeyValueBean keyValueBean, MultipartFile file,Model modelMap) throws IOException {
+    public String uploadByJarDeploy(MultipartFile file, String key, String value, Model modelMap) throws IOException {
+        LogUtil.info("input user :" + key + ", token = " + value);
+        if (file == null || StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+            modelMap.addAttribute("uploadResult", "请输入信息后再提交");
+            return "upload";
+        }
+
+        // 检查是不是8位工号
+        if (key.length() != 8 || !value.equalsIgnoreCase(dishConfig.getFileUploadToken())) {
+            modelMap.addAttribute("uploadResult", "请输入正确的账号和Token");
+            return "upload";
+        }
+
         String originalFilename = file.getOriginalFilename();
         LogUtil.info("文件名: " + dishConfig.getFileUploadDir() + file.getOriginalFilename());
         String newFileName = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS-").format(new Date()) + originalFilename;
@@ -68,6 +81,7 @@ public class FileController {
             return "upload";
         }
 
+
         // 下载之后，进行解析1，token是否正确
         try {
             DishMenuManager.getIns().init(dishService, dishConfig);
@@ -78,6 +92,9 @@ public class FileController {
             modelMap.addAttribute("uploadResult", "文件解析失败，请重试...");
             return "upload";
         }
+
+        FileUtils.copyFileUsingStream(dishConfig.getFileUploadDir() + newFileName, dishConfig.getFileUploadDir() + "text.xlsx");
+
 
         modelMap.addAttribute("uploadResult", "已上传文件成功");
         return "redirect:/weekDishes";
