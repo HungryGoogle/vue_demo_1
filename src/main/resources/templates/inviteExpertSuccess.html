@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>邀请专家doc</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/inviteExpert.css}"/>
+</head>
+<body>
+
+<div id="content">
+    <div class="login-header" align="center">
+        <a th:href="@{/doc/download(fileName=专家邀请材料.docx)}">生成材料成功，请点击下载</a>
+    </div>
+
+    <form th:action="@{/doc/doInviteExpert}" method="post">
+        <div class="login-input-box" >
+            <span class="input-tip">专家1姓名</span>
+            <input type="text" placeholder="专家1姓名" id="expert1" th:value="${expert1}" name="expert1">
+        </div>
+        <div class="login-input-box" >
+            <span class="input-tip">专家2姓名</span>
+            <input type="text" placeholder="专家2姓名" id="expert2" th:value="${expert2}" name="expert2">
+        </div>
+        <div class="login-input-box" >
+            <span class="input-tip">专家3姓名</span>
+            <input type="text" placeholder="专家3姓名" id="expert3" th:value="${expert3}" name="expert3">
+        </div>
+        <div class="login-input-box" >
+            <span class="input-tip">会议日期</span>
+            <input type="text" placeholder="会议日期" id="meetingDate" th:value="${meetingDate}" name="meetingDate">
+        </div>
+        <div class="login-input-box" >
+            <span class="input-tip">会议时间</span>
+            <input type="text" placeholder="会议时间" id="meetingTime" th:value="${meetingTime}" name="meetingTime">
+        </div>
+        <div class="login-input-box" >
+            <span class="input-tip">会议地点</span>
+            <input type="text" placeholder="会议地点" id="meetingPlace" th:value="${meetingPlace}" name="meetingPlace">
+        </div>
+        <div class="login-input-box" >
+            <span class="input-tip">联系人姓名</span>
+            <input type="text" placeholder="联系人姓名" id="senderName" th:value="${senderName}" name="senderName">
+        </div>
+        <div class="login-input-box" >
+            <span class="input-tip">联系人电话</span>
+            <input type="text" placeholder="联系人电话" id="senderPhone" th:value="${senderPhone}" name="senderPhone">
+        </div>
+        <div class="login-input-box" >
+            <span class="input-tip">邀请时间</span>
+            <input type="text" placeholder="邀请时间" id="sendDate" th:value="${sendDate}" name="sendDate">
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -37,6 +37,21 @@ public class DocController {
         return "inviteExpert";
     }
 
+    /**
+     * 文件下载
+     */
+    @RequestMapping("/doc/download")
+    public void downloadFile(String fileName, HttpServletResponse response) throws Exception {
+        LogUtil.info("当前下载的文件的目录是：" + dishConfig.getFileDownloadDir());
+        File file = new File(dishConfig.getFileDownloadDir(), fileName);
+        FileInputStream is = new FileInputStream(file);
+        // 2.1 获取响应流之前  一定要设置以附件形式下载
+        response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        // 3.获取响应输出流
+        ServletOutputStream os = response.getOutputStream();
+        FileCopyUtils.copy(is, os);
+    }
+
     @RequestMapping("/doc/doInviteExpert")
     public String doInviteExpert(String expert1,
                                  String expert2,
@@ -69,10 +84,10 @@ public class DocController {
                 || StringUtils.isEmpty(senderPhone)
                 || StringUtils.isEmpty(sendDate)
         ){
-            modelMap.addAttribute("expert1",expert1);
+            LogUtil.info("doInviteExpert, params empty, goto inviteExpert...");
             return "inviteExpert";
         }
-
+//
         InvideExpertBean invideExpertBean = new InvideExpertBean();
         invideExpertBean.setExpert1(expert1);
         invideExpertBean.setExpert2(expert2);
@@ -84,28 +99,12 @@ public class DocController {
         invideExpertBean.setSenderPhone(senderPhone);
         invideExpertBean.setSendDate(sendDate);
 
+        // 通过doc模板生成word
         createDocByTemplate(invideExpertBean, dishConfig.getFileDownloadDir() + "专家邀请材料.docx");
-//        try {
-//            downloadFile("专家邀请材料.docx", response);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        // 下载该文件
-        return "inviteExpert";
+
+        return "inviteExpertSuccess";
     }
 
-    public void downloadFile(String fileName, HttpServletResponse response) throws Exception {
-        LogUtil.info("当前下载的文件的目录是：" + dishConfig.getFileDownloadDir());
-        File file = new File(dishConfig.getFileDownloadDir(), fileName);
-        FileInputStream inputStream = new FileInputStream(file);
-        // 2.1 获取响应流之前  一定要设置以附件形式下载
-        response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-        // 3.获取响应输出流
-        ServletOutputStream outputStream = response.getOutputStream();
-        FileCopyUtils.copy(inputStream, outputStream);
-        inputStream.close();
-        outputStream.close();
-    }
 
     /**
      * eg.
