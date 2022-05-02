@@ -3,6 +3,7 @@ package com.example.test.controller;
 
 import com.example.test.bean.DemoData;
 import com.example.test.bean.DishBean;
+import com.example.test.util.DocUtils;
 import com.example.test.util.IpUtil;
 import com.example.test.util.LogUtil;
 import com.example.test.util.config.DishConfig;
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HelloController {
@@ -29,13 +33,27 @@ public class HelloController {
     @RequestMapping("/hello")
     public String sayHello() {
         LogUtil.info("[lee-->]LoggerFactory sayHello");
-//        ConfigUtils configUtils = new ConfigUtils();
-//        LogUtil.info(String.valueOf(configUtils.getMaxDishItem()));
-//        LogUtil.info(configUtils.getUpLoadDirPath());
-        LogUtil.info(String.valueOf(dishConfig.getMaxDishItem()));
-        LogUtil.info(dishConfig.getFileDownloadDir());
+        testDoc();
 
         return "indexVue";
+    }
+
+    public void testDoc() {
+        try {
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("expert_1", "宋广华");
+            dataMap.put("expert_2", "王信");
+            dataMap.put("expert_3", "秦老师");
+            dataMap.put("meeting_date", "2022年9月20日");
+            dataMap.put("meeting_time", "上午9:00");
+            dataMap.put("meeting_place", "国科大杭州高等研究院7号楼2楼215会议室");
+            dataMap.put("sender_name", "李文庆");
+            dataMap.put("sender_phone", "0571-12345678");
+            dataMap.put("send_date", "2022年9月9日");
+            DocUtils.saveWord("d:\\temp\\test.docx", dataMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //创建一个方法，让其返回list集合
